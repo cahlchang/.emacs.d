@@ -1,5 +1,6 @@
 auto-save-list/*
 backup/*
 elpa/*
+straight/*
 network-security.data
 !*/.gitkeep
