@@ -5,6 +5,14 @@
   (exec-path-from-shell-initialize)
   )
 
+(defun set-exec-path-from-shell-PATH ()
+  (let ((path-from-shell (replace-regexp-in-string
+                          "[ \t\n]*$"
+                          ""
+                          (shell-command-to-string "$SHELL --login -i -c 'echo $PATH'"))))
+    (setenv "PATH" path-from-shell)
+    (setq eshell-path-env path-from-shell) ; for eshell users
+    (setq exec-path (split-string path-from-shell path-separator))))
 
 (show-paren-mode t)                       ;; 対応する括弧をハイライト
 (setq show-paren-style 'expression)            ;; 括弧のハイライトの設定。
@@ -35,7 +43,17 @@
 
 (global-set-key "\M-r" 'revert-buffer-no-confirm)
 
+(savehist-mode 1)
+(persistent-scratch-setup-default)
 
 (use-package ag
   :ensure t
   :config)
+
+
+;; keybindings
+(use-package general :ensure t
+  :config
+  (setq general-default-keymaps 'evil-normal-state-map)
+  ;; unbind space from dired map to allow for git status
+  (general-define-key :keymaps 'dired-mode-map "SPC" nil))
