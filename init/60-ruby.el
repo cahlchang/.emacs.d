@@ -1,6 +1,6 @@
-(projectile-rails-global-mode)
 
 (setq ruby-insert-encoding-magic-comment nil)
+(projectile-rails-global-mode)
 
 (use-package slim-mode
   :ensure t
