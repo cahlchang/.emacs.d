@@ -1,4 +1,3 @@
-
 (use-package js-mode
   :mode ("\\.json$" . js-mode)
   :init
@@ -8,15 +7,26 @@
 		(make-local-variable 'js-indent-level)
 		(setq js-indent-level 2)))))
 
-(setq js-indent-level 2)
+
+(add-hook 'js-mode-hook
+          (lambda ()
+            (make-local-variable 'js-indent-level)
+            (setq js-indent-level 2)))
 
 ;; ************************************************************************
 ;; mmm-mode
 ;; ************************************************************************
+
+(straight-use-package 'use-package)
+(setq straight-use-package-by-default t)
+
+(straight-use-package '(mmm-mode :host github :repo "purcell/mmm-mode"))
+
 (use-package mmm-mode
   :ensure t
   :config
   (setq mmm-global-mode 'maybe)
+  (setq js-indent-level 2)
   (setq mmm-submode-decoration-level 2)
   (set-face-background 'mmm-default-submode-face "gray13")
 
