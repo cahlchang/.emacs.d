@@ -1,6 +1,3 @@
-;; 何も考えず公式のREADMEからコピペすればいいコード
-;; straight.el自身のインストールと初期設定を行ってくれる
-
 ;; Added by Package.el.  This must come before configurations of
 ;; installed packages.  Don't delete this line.  If you don't want it,
 ;; just comment it out by adding a semicolon to the start of the line.
@@ -35,3 +32,4 @@
 
 ;; ~/.emacs.d/init/ 以下のファイルを全部読み込む
 (init-loader-load "~/.emacs.d/init")
+(init-loader-load "~/.emacs.d/el")

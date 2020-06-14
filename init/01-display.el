@@ -36,76 +36,82 @@
       (global-hl-line-highlight))))
 (setq global-hl-line-timer
       (run-with-idle-timer 0.03 t 'global-hl-line-timer-function))
-;; (cancel-timer global-hl-line-timer)
+(cancel-timer global-hl-line-timer)
 
 
-(use-package zerodark-theme)
-
-(use-package fic-ext-mode
-  :disabled t
+(use-package doom-themes
+  :custom
+  (doom-themes-enable-italic t)
+  (doom-themes-enable-bold t)
+  :custom-face
+  (doom-modeline-bar ((t (:background "#6272a4"))))
   :config
-  (defun add-something-to-mode-hooks (mode-list something)
-    "helper function to add a callback to multiple hooks"
-    (dolist (mode mode-list)
-      (add-hook (intern (concat (symbol-name mode) "-mode-hook")) something)))
-  (add-something-to-mode-hooks '(c++ emacs-lisp ruby text scala) 'fic-ext-mode))
+  (load-theme 'doom-dracula t)
+  (doom-themes-neotree-config)
 
-;;line
-(global-linum-mode t)
-(setq linum-format "%4d")
+  (doom-themes-org-config))
 
-;;; 最終行に必ず一行挿入する
+(use-package doom-modeline
+  :custom
+  (doomz-modeline-buffer-file-name-style 'truncate-with-project)
+  (doom-modeline-icon t)
+  (doom-modeline-major-mode-icon nil)
+  (doom-modeline-minor-modes nil)
+  :hook
+  (after-init . doom-modeline-mode)
+  :config
+  (line-number-mode 0)
+  (column-number-mode 0)
+  (doom-modeline-def-modeline 'main
+    '(bar workspace-number window-number evil-state god-state ryo-modal xah-fly-keys matches buffer-info remote-host buffer-position parrot selection-info)
+    '(misc-info persp-name lsp github debug minor-modes input-method major-mode process vcs checker)))
+
+(if (version<= "26.0.50" emacs-version)
+    (progn
+      (global-display-line-numbers-mode)
+      (set-face-attribute 'line-number nil
+                          :foreground "DarkOliveGreen"
+                          :background "#131521")
+      (set-face-attribute 'line-number-current-line nil
+                          :foreground "gold")))
+
 (setq require-final-newline t)
-
-
-
-;; Tabs/Spaces
-(setq-default indent-tabs-mode nil)
-(setq-default tab-width 4)
-(setq-default tab-stop-list (number-sequence 4 120 4))
-
-(require 'whitespace)
-(setq whitespace-line-column 80)
-
-(setq whitespace-style
-      '(face           ; faceで可視化
-        trailing       ; 行末
-        tabs           ; タブ
-        spaces         ; スペース
-        empty          ; 先頭/末尾の空行
-        space-mark     ; 表示のマッピング
-        tab-mark))
-
-(global-whitespace-mode t)
-(add-hook 'term-mode-hook
-          (lambda()
-            (whitespace-mode 0)))
-
-(setq whitespace-display-mappings
-      '((space-mark ?\u3000 [?\u25a1])
-        ;; WARNING: the mapping below has a problem.
-        ;; When a TAB occupies exactly one column, it will display the
-        ;; character ?\xBB at that column followed by a TAB which goes to
-        ;; the next TAB column.
-        ;; If this is a problem for you, please, comment the line below.
-        (tab-mark ?\t [?\u00BB ?\t] [?\\ ?\t])))
-
-(defvar my/bg-color "#232323")
-(set-face-attribute 'whitespace-trailing nil
-                    :background my/bg-color
-                    :foreground "DeepPink"
-                    :underline t)
-(set-face-attribute 'whitespace-tab nil
-                    :background my/bg-color
-                    :foreground "LightSkyBlue"
-                    :underline t)
-(set-face-attribute 'whitespace-space nil
-                    :background my/bg-color
-                    :foreground "GreenYellow"
-                    :weight 'bold)
-(set-face-attribute 'whitespace-empty nil
-                    :background my/bg-color)
 
 ;; remove toolbar
 (menu-bar-mode 0)
 (tool-bar-mode 0)
+
+(use-package hide-mode-line
+  :hook
+  ((neotree-mode imenu-list-minor-mode minimap-mode) . hide-mode-line-mode))
+
+(use-package beacon
+  :custom
+  (beacon-color "yellow")
+  :config
+  (beacon-mode 1))
+
+;; (require 'whitespace)
+;; (setq whitespace-line-column 80)
+
+;; (setq whitespace-style
+;;       '(face           ; faceで可視化
+;;         trailing       ; 行末
+;;         tabs           ; タブ
+;;         spaces         ; スペース
+;;         empty          ; 先頭/末尾の空行
+;;         space-mark     ; 表示のマッピング
+;;         tab-mark))
+
+;; (global-whitespace-mode t)
+;; (add-hook 'term-mode-hook
+;;           (lambda()
+;;             (whitespace-mode 0)))
+
+;; (setq whitespace-display-mappings
+;;       '((space-mark ?\u3000 [?\u25a1])
+;;         ;; WARNING: the mapping below has a problem.
+;;         ;; When a TAB occupies exactly one column, it will display the
+;;         ;; character ?\xBB at that column followed by a TAB which goes to
+;;         ;; the next TAB column.
+;;         ;; If this is a problem for you, please, comment the line below.

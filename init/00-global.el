@@ -1,3 +1,17 @@
+(use-package dashboard
+  :diminish
+  (dashboard-mode page-break-lines-mode)
+  :custom
+  (dashboard-startup-banner 4)
+  (dashboard-items '((recents . 15)
+                     (projects . 5)
+                     (bookmarks . 5)
+                     (agenda . 5)))
+  :hook
+  (after-init . dashboard-setup-startup-hook)
+  :config
+  (add-to-list 'dashboard-items '(agenda) t))
+
 (use-package exec-path-from-shell
   :straight t
   :if (memq window-system '(mac ns))
@@ -51,9 +65,19 @@
   :config)
 
 
+(use-package which-key
+  :diminish which-key-mode
+  :hook (after-init . which-key-mode))
+
 ;; keybindings
 (use-package general :ensure t
   :config
   (setq general-default-keymaps 'evil-normal-state-map)
   ;; unbind space from dired map to allow for git status
   (general-define-key :keymaps 'dired-mode-map "SPC" nil))
+
+(use-package amx)
+
+
+(persistent-scratch-setup-default)
+(setq indent-tabs-mode nil) 
