@@ -12,6 +12,7 @@
              (eldoc-mode +1)
              ))
 ;; lsp
+;; npm install vls -g
 (use-package lsp-mode
   :commands lsp
   :hook ((vue-mode . lsp)
