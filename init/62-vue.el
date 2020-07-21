@@ -53,3 +53,10 @@
   )
 
 (setq typescript-indent-level 2) 
+(setq js-indent-level 2)
+
+
+(add-hook 'javascript-mode-hook
+          (lambda ()
+            (make-local-variable 'js-indent-level)
+            (setq js-indent-level 2)))

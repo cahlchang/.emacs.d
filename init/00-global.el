@@ -1,4 +1,4 @@
-(use-package dashboard
+](use-package dashboard
   :diminish
   (dashboard-mode page-break-lines-mode)
   :custom
@@ -81,3 +81,4 @@
 
 (persistent-scratch-setup-default)
 (setq indent-tabs-mode nil) 
+(setq auto-save-default nil)
