@@ -12,6 +12,7 @@
   (lsp-enable-completion-at-point nil)
   :hook
   (go-mode . lsp)
+  (python-mode . lsp)
   :bind
   (:map lsp-mode-map
   ("C-c r"   . lsp-rename))
@@ -92,7 +93,7 @@
   :ensure t
   :config
   (global-set-key (kbd "M-x") 'counsel-M-x)
-  (global-set-key (kbd "C-x C-f") 'counsel-find-file)
+;;  (global-set-key (kbd "C-x C-f") 'counsel-find-file)
   (global-set-key (kbd "<f1> f") 'counsel-describe-function)
   (global-set-key (kbd "<f1> v") 'counsel-describe-variable)
   (global-set-key (kbd "<f1> l") 'counsel-find-library)
@@ -103,12 +104,16 @@
   (global-set-key (kbd "C-c a") 'counsel-ag)
   (global-set-key (kbd "C-x l") 'counsel-locate)
   (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history))
-;; (use-package eglot
-;;   :hook ((python-mode rust-mode kotlin-mode ruby-mode) . eglot-ensure)
-;;   :config
-;;   ;; Fix column calculation when ligatures are used
-;;   (setq eglot-current-column-function 'eglot-lsp-abiding-column
-;;         eglot-move-to-column-function 'eglot-move-to-lsp-abiding-column
-;;         eglot-autoshutdown t
-;;         eglot-autoreconnect nil)
-;;   (general-define-key :keymap 'eglot-mode-map "C-h ." 'eglot-help-at-point))
+
+(add-hook 'company-completion-finished-hook 'lsp-signature-activate)
+
+;; completion-in-region-function も一時的にデフォに戻さないと，TAB補完時に
+;; ivy が有効化されてしまう．
+(defun my-disable-counsel-find-file (&rest args)
+  "Disable `counsel-find-file' and use the original `find-file' with ARGS."
+  (let ((completing-read-function #'completing-read-default)
+        (completion-in-region-function #'completion--in-region))
+    (apply #'read-file-name-default args)))
+(setq read-file-name-function #'my-disable-counsel-find-file)
+;; (counsel-mode 1) を設定しても counsel-find-file が呼ばれないようにする．
+(define-key counsel-mode-map [remap find-file] nil)

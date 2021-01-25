@@ -91,22 +91,24 @@
   :config
   (beacon-mode 1))
 
-;; (require 'whitespace)
+(require 'whitespace)
 ;; (setq whitespace-line-column 80)
 
-;; (setq whitespace-style
-;;       '(face           ; faceで可視化
-;;         trailing       ; 行末
-;;         tabs           ; タブ
-;;         spaces         ; スペース
-;;         empty          ; 先頭/末尾の空行
-;;         space-mark     ; 表示のマッピング
-;;         tab-mark))
+(setq whitespace-style
+      '(face           ; faceで可視化
+        trailing       ; 行末
+        tabs           ; タブ
+        spaces         ; スペース
+        empty          ; 先頭/末尾の空行
+        space-mark     ; 表示のマッピング
+        tab-mark))
 
-;; (global-whitespace-mode t)
-;; (add-hook 'term-mode-hook
-;;           (lambda()
-;;             (whitespace-mode 0)))
+(setq-default indent-tabs-mode nil)
+
+(global-whitespace-mode t)
+(add-hook 'term-mode-hook
+          (lambda()
+            (whitespace-mode 0)))
 
 ;; (setq whitespace-display-mappings
 ;;       '((space-mark ?\u3000 [?\u25a1])
